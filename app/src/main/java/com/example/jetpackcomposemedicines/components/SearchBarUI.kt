@@ -33,25 +33,27 @@ fun SearchBarUI(
     placeholderText: String = "",
     onSearchTextChanged: (String) -> Unit = {},
     onClearClick: () -> Unit = {},
-    onNavigateBack: () -> Unit = {},
     matchesFound: Boolean,
     results: @Composable () -> Unit = {}
-){
+) {
 
     Box {
         Column(
             modifier = Modifier.fillMaxSize()
-        ){
+        ) {
             SearchBar(
                 searchText,
                 placeholderText,
                 onSearchTextChanged,
-                onClearClick,
-                onNavigateBack
+                onClearClick
             )
 
             if (matchesFound) {
-                Text(text = "Resultados", modifier = Modifier.padding(8.dp), fontWeight = FontWeight.Bold)
+                Text(
+                    text = "Resultados",
+                    modifier = Modifier.padding(8.dp),
+                    fontWeight = FontWeight.Bold
+                )
                 results()
             } else {
                 if (searchText.isNotEmpty()) {
@@ -68,61 +70,54 @@ fun SearchBar(
     searchText: String,
     placeholderText: String = "",
     onSearchTextChanged: (String) -> Unit = {},
-    onClearClick: () -> Unit = {},
-    onNavigateBack: () -> Unit = {}
-){
+    onClearClick: () -> Unit = {}
+) {
     var showClearButton by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
 
-    TopAppBar(title = { Text(text = "") }, navigationIcon = {
-        IconButton(onClick = { onNavigateBack }) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                modifier = Modifier,
-                contentDescription = stringResource(id = R.string.icn_search_back_content_description)
-            )
-        }
-    }, actions = {
+    TopAppBar(
+        title = { Text(text = "") },
+        actions = {
 
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 2.dp)
-                .onFocusChanged { focusState -> showClearButton = (focusState.isFocused) }
-                .focusRequester(focusRequester),
-            value = searchText,
-            onValueChange = onSearchTextChanged,
-            placeholder = {
-                Text(text = placeholderText)
-            },
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                backgroundColor = Color.Transparent,
-                cursorColor = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
-            ),
-            trailingIcon = {
-                AnimatedVisibility(
-                    visible = showClearButton,
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
-                    IconButton(onClick = { onClearClick }) {
-                        Icon(
-                            imageVector = Icons.Filled.Close,
-                            contentDescription = stringResource(id = R.string.icn_search_clear_content_description)
-                        )
-                        
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 2.dp)
+                    .onFocusChanged { focusState -> showClearButton = (focusState.isFocused) }
+                    .focusRequester(focusRequester),
+                value = searchText,
+                onValueChange = onSearchTextChanged,
+                placeholder = {
+                    Text(text = placeholderText)
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    backgroundColor = Color.Transparent,
+                    cursorColor = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
+                ),
+                trailingIcon = {
+                    AnimatedVisibility(
+                        visible = showClearButton,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        IconButton(onClick = { onClearClick }) {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = stringResource(id = R.string.icn_search_clear_content_description)
+                            )
+
+                        }
                     }
-                }
-            },
-            maxLines = 1,
-            singleLine = true,
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { keyboardController?.hide()})
-        )
-    })
+                },
+                maxLines = 1,
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() })
+            )
+        })
 
     LaunchedEffect(key1 = Unit) {
         focusRequester.requestFocus()
@@ -145,5 +140,6 @@ fun NoSearchResults() {
 @Preview(showSystemUi = false, showBackground = true)
 @Composable
 fun Preview() {
+    SearchBar(searchText = "")
 
 }
