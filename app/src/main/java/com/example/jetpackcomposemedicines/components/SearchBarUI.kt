@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -79,7 +80,7 @@ fun SearchBar(
     TopAppBar(
         title = { Text(text = "") },
         actions = {
-
+            Icon(imageVector = Icons.Filled.Search, contentDescription = "Search medicines")
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -89,7 +90,7 @@ fun SearchBar(
                 value = searchText,
                 onValueChange = onSearchTextChanged,
                 placeholder = {
-                    Text(text = placeholderText)
+                    Text(text = placeholderText, color = Color.White)
                 },
                 colors = TextFieldDefaults.textFieldColors(
                     focusedIndicatorColor = Color.Transparent,
@@ -137,9 +138,9 @@ fun NoSearchResults() {
 
 
 @ExperimentalComposeUiApi
-@Preview(showSystemUi = false, showBackground = true)
+@Preview(showSystemUi = false)
 @Composable
 fun Preview() {
-    SearchBar(searchText = "")
+    SearchBarUI(searchText = "", "Busca tus medicamentos aquí", matchesFound = false)
 
 }
