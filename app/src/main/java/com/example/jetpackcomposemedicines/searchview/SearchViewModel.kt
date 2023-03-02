@@ -13,17 +13,17 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMedicinesUseCase): ViewModel() {
 
-    private val searchText: MutableStateFlow<String> = MutableStateFlow("")
-    private var showProgressBar: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val searchText = MutableStateFlow("")
+    private var showProgressBar = MutableStateFlow(false)
     private var matchedMedicines: MutableStateFlow<List<MedicineModel>> = MutableStateFlow(arrayListOf())
 
-    val medicineSearchModelState = combine(
+    val searchModelState = combine(
         searchText,
         matchedMedicines,
         showProgressBar
     ) { text, matchedMedcicines, showProgress ->
 
-        MedicineSearchModelState(text, matchedMedcicines, showProgress)
+        SearchModelState(text, matchedMedcicines, showProgress)
     }
 
     fun onSearchTextChanged(changedSearchText: String) {

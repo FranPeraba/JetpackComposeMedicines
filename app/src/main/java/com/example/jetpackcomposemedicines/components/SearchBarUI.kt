@@ -4,8 +4,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -37,7 +39,6 @@ fun SearchBarUI(
     matchesFound: Boolean,
     results: @Composable () -> Unit = {}
 ) {
-
     Box {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -48,17 +49,20 @@ fun SearchBarUI(
                 onSearchTextChanged,
                 onClearClick
             )
-
-            if (matchesFound) {
-                Text(
-                    text = "Resultados",
-                    modifier = Modifier.padding(8.dp),
-                    fontWeight = FontWeight.Bold
-                )
-                results()
-            } else {
-                if (searchText.isNotEmpty()) {
-                    NoSearchResults()
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())) {
+                if (matchesFound) {
+                    Text(
+                        text = "Resultados",
+                        modifier = Modifier.padding(8.dp),
+                        fontWeight = FontWeight.Bold
+                    )
+                    results()
+                } else {
+                    if (searchText.isNotEmpty()) {
+                        NoSearchResults()
+                    }
                 }
             }
         }
@@ -104,7 +108,7 @@ fun SearchBar(
                         enter = fadeIn(),
                         exit = fadeOut()
                     ) {
-                        IconButton(onClick = { onClearClick }) {
+                        IconButton(onClick = { onClearClick() }) {
                             Icon(
                                 imageVector = Icons.Filled.Close,
                                 contentDescription = stringResource(id = R.string.icn_search_clear_content_description)

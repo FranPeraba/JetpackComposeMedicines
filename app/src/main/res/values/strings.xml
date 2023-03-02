@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">JetpackComposeMedicines</string>
-    <string name="icn_search_back_content_description">Exit Search View</string>
-    <string name="icn_search_clear_content_description">Clear Search</string>
+    <string name="icn_search_clear_content_description">Limpiar búsqueda</string>
 </resources>
