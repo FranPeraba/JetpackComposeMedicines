@@ -1,5 +1,6 @@
 package com.example.jetpackcomposemedicines.searchview
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jetpackcomposemedicines.data.model.MedicineModel
@@ -31,7 +32,11 @@ class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMe
             matchedMedicines.value = arrayListOf()
         } else if (changedSearchText.length >= 3) {
             viewModelScope.launch {
-                matchedMedicines.value = getMedicinesUseCase(changedSearchText)
+                try {
+                    matchedMedicines.value = getMedicinesUseCase(changedSearchText)
+                } catch (e: Exception) {
+                    Log.e(SearchViewModel::class.simpleName, "Unable to get medicines")
+                }
             }
         }
     }
