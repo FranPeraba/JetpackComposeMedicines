@@ -11,32 +11,29 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMedicinesUseCase): ViewModel() {
+class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMedicinesUseCase) :
+    ViewModel() {
 
     private val searchText = MutableStateFlow("")
-    private var showProgressBar = MutableStateFlow(false)
-    private var matchedMedicines: MutableStateFlow<List<MedicineModel>> = MutableStateFlow(arrayListOf())
+    private var matchedMedicines: MutableStateFlow<List<MedicineModel>> =
+        MutableStateFlow(arrayListOf())
 
-    val searchModelState = combine(
-        searchText,
-        matchedMedicines,
-        showProgressBar
-    ) { text, matchedMedcicines, showProgress ->
-
-        SearchModelState(text, matchedMedcicines, showProgress)
+    val searchModelState = combine(searchText, matchedMedicines) { text, matchedMedicines ->
+        SearchModelState(
+            text,
+            matchedMedicines
+        )
     }
 
     fun onSearchTextChanged(changedSearchText: String) {
         searchText.value = changedSearchText
-        matchedMedicines.value = arrayListOf()
-        if (changedSearchText.length >= 3){
+        if (changedSearchText.isEmpty()) {
+            matchedMedicines.value = arrayListOf()
+        } else if (changedSearchText.length >= 3) {
             viewModelScope.launch {
                 matchedMedicines.value = getMedicinesUseCase(changedSearchText)
             }
-        } else {
-            matchedMedicines.value = arrayListOf()
         }
-
     }
 
     fun onClearClick() {

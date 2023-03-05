@@ -44,7 +44,7 @@ fun SearchUI(navHostController: NavHostController, searchViewModel: SearchViewMo
         matchesFound = searchModelState.medicines.isNotEmpty()
     ) {
         Medicines(medicines = searchModelState.medicines) {medicine ->
-            navHostController.navigate(route = "${NavRoutes.Detail.route}?nregistro=${medicine.nregistro}")
+            //navHostController.navigate(route = "${NavRoutes.Detail.route}?nregistro=${medicine.nregistro}")
         }
     }
 }
