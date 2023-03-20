@@ -15,7 +15,7 @@ class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMe
     ViewModel() {
 
     val searchText = MutableStateFlow("")
-    var matchedMedicines = MutableStateFlow<List<Medicine>>(arrayListOf())
+    var matchedMedicines = MutableStateFlow<List<Medicine>>(emptyList())
 
     val searchModelState = combine(searchText, matchedMedicines) { text, matchedMedicines ->
         SearchModelState(
@@ -27,7 +27,7 @@ class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMe
     fun onSearchTextChanged(changedSearchText: String) {
         searchText.value = changedSearchText
         if (changedSearchText.isEmpty()) {
-            matchedMedicines.value = arrayListOf()
+            matchedMedicines.value = emptyList()
         } else if (changedSearchText.length >= 3) {
             viewModelScope.launch {
                 matchedMedicines.value = getMedicinesUseCase(changedSearchText)
@@ -37,6 +37,6 @@ class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMe
 
     fun onClearClick() {
         searchText.value = ""
-        matchedMedicines.value = arrayListOf()
+        matchedMedicines.value = emptyList()
     }
 }

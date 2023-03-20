@@ -64,7 +64,7 @@ class SearchViewModelTest {
         searchViewModel.onSearchTextChanged(query)
 
         // Then
-        assertEquals(searchViewModel.matchedMedicines.value, arrayListOf<Medicine>())
+        assertEquals(searchViewModel.matchedMedicines.value, emptyList<Medicine>())
     }
 
     @Test
@@ -78,6 +78,6 @@ class SearchViewModelTest {
 
         // Then
         assertEquals(searchViewModel.searchText.value, "")
-        assertEquals(searchViewModel.matchedMedicines.value, arrayListOf<Medicine>())
+        assertEquals(searchViewModel.matchedMedicines.value, emptyList<Medicine>())
     }
 }

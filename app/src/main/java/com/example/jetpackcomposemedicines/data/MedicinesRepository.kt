@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class MedicinesRepository @Inject constructor(private val medicinesService: MedicinesService) {
 
-    private var medicines: List<Medicine> = arrayListOf()
+    private var medicines: List<Medicine> = emptyList()
 
     suspend fun getMedicines(query: String): List<Medicine>{
         try {
