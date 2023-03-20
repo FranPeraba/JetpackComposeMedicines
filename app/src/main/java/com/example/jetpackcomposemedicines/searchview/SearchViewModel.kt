@@ -1,9 +1,8 @@
 package com.example.jetpackcomposemedicines.searchview
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.jetpackcomposemedicines.data.model.MedicineModel
+import com.example.jetpackcomposemedicines.data.model.Medicine
 import com.example.jetpackcomposemedicines.domain.GetMedicinesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,9 +14,8 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMedicinesUseCase) :
     ViewModel() {
 
-    private val searchText = MutableStateFlow("")
-    private var matchedMedicines: MutableStateFlow<List<MedicineModel>> =
-        MutableStateFlow(arrayListOf())
+    val searchText = MutableStateFlow("")
+    var matchedMedicines = MutableStateFlow<List<Medicine>>(arrayListOf())
 
     val searchModelState = combine(searchText, matchedMedicines) { text, matchedMedicines ->
         SearchModelState(
@@ -32,11 +30,7 @@ class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMe
             matchedMedicines.value = arrayListOf()
         } else if (changedSearchText.length >= 3) {
             viewModelScope.launch {
-                try {
-                    matchedMedicines.value = getMedicinesUseCase(changedSearchText)
-                } catch (e: Exception) {
-                    Log.e(SearchViewModel::class.simpleName, "Unable to get medicines")
-                }
+                matchedMedicines.value = getMedicinesUseCase(changedSearchText)
             }
         }
     }

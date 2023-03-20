@@ -2,8 +2,6 @@ package com.example.jetpackcomposemedicines.searchview
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -18,9 +16,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
-import com.example.jetpackcomposemedicines.NavRoutes
 import com.example.jetpackcomposemedicines.components.SearchBarUI
-import com.example.jetpackcomposemedicines.data.model.MedicineModel
+import com.example.jetpackcomposemedicines.data.model.Medicine
 
 @ExperimentalComposeUiApi
 @Composable
@@ -50,7 +47,7 @@ fun SearchUI(navHostController: NavHostController, searchViewModel: SearchViewMo
 }
 
 @Composable
-fun Medicines(medicines: List<MedicineModel>?, onClick: (MedicineModel) -> Unit) {
+fun Medicines(medicines: List<Medicine>?, onClick: (Medicine) -> Unit) {
     medicines?.forEach { medicine ->
         MedicineRow(medicine = medicine) {
             onClick(medicine)
@@ -60,7 +57,7 @@ fun Medicines(medicines: List<MedicineModel>?, onClick: (MedicineModel) -> Unit)
 }
 
 @Composable
-fun MedicineRow(medicine: MedicineModel, onClick: () -> Unit) {
+fun MedicineRow(medicine: Medicine, onClick: () -> Unit) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(8.dp)
