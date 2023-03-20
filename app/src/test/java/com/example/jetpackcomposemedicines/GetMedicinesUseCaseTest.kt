@@ -22,7 +22,7 @@ class GetMedicinesUseCaseTest {
     @RelaxedMockK
     private lateinit var medicinesRepository: MedicinesRepository
 
-    lateinit var getMedicinesUseCase: GetMedicinesUseCase
+    private lateinit var getMedicinesUseCase: GetMedicinesUseCase
 
     @Before
     fun onBefore() {
@@ -31,7 +31,7 @@ class GetMedicinesUseCaseTest {
     }
 
     @Test
-    fun getMedicines_whenRequestsMedicinesFromRepository() = runBlocking {
+    fun `getMedicines when requests medicines from repository`() = runBlocking {
         // Given
         coEvery { medicinesRepository.getMedicines(any()) } returns medicinesList
 
