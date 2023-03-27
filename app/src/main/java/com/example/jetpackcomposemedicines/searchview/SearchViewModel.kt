@@ -6,6 +6,7 @@ import com.example.jetpackcomposemedicines.data.model.Medicine
 import com.example.jetpackcomposemedicines.domain.GetMedicinesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,10 +15,13 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMedicinesUseCase) :
     ViewModel() {
 
-    val searchText = MutableStateFlow("")
-    var matchedMedicines = MutableStateFlow<List<Medicine>>(emptyList())
+    private val _searchText = MutableStateFlow("")
+    val searchText: StateFlow<String> = _searchText
 
-    val searchModelState = combine(searchText, matchedMedicines) { text, matchedMedicines ->
+    private val _matchedMedicines = MutableStateFlow<List<Medicine>>(emptyList())
+    val matchedMedicines: StateFlow<List<Medicine>> = _matchedMedicines
+
+    val searchModelState = combine(_searchText, _matchedMedicines) { text, matchedMedicines ->
         SearchModelState(
             text,
             matchedMedicines
@@ -25,18 +29,18 @@ class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMe
     }
 
     fun onSearchTextChanged(changedSearchText: String) {
-        searchText.value = changedSearchText
+        _searchText.value = changedSearchText
         if (changedSearchText.isEmpty()) {
-            matchedMedicines.value = emptyList()
+            _matchedMedicines.value = emptyList()
         } else if (changedSearchText.length >= 3) {
             viewModelScope.launch {
-                matchedMedicines.value = getMedicinesUseCase(changedSearchText)
+                _matchedMedicines.value = getMedicinesUseCase(changedSearchText)
             }
         }
     }
 
     fun onClearClick() {
-        searchText.value = ""
-        matchedMedicines.value = emptyList()
+        _searchText.value = ""
+        _matchedMedicines.value = emptyList()
     }
 }

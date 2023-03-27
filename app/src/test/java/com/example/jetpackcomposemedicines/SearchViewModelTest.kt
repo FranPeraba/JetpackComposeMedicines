@@ -42,7 +42,7 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun `onSearchTextChange getMedicinesUseCase if query is greater or equal than three characters`() = runTest {
+    fun `onSearchTextChange getMedicinesUseCase if query length is greater or equal than three`() = runTest {
         // Given
         val query = "Medicine"
         val medicinesList = listOf(Medicine("001", "Medicine 1"), Medicine("002", "Medicine 2"))
@@ -68,12 +68,14 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun `onClearClick searchText and matchedMedicines are empty`() {
+    fun `onClearClick searchText and matchedMedicines are empty`() = runTest {
         // Given
-        searchViewModel.searchText.value = "Medicine"
-        searchViewModel.matchedMedicines.value = listOf(Medicine("001", "Medicine 1"), Medicine("002", "Medicine 2"))
+        val query = "Medicine"
+        val medicinesList = listOf(Medicine("001", "Medicine 1"), Medicine("002", "Medicine 2"))
+        coEvery { getMedicinesUseCase(any()) } returns medicinesList
 
         // When
+        searchViewModel.onSearchTextChanged(query)
         searchViewModel.onClearClick()
 
         // Then
