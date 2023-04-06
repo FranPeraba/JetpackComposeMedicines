@@ -42,7 +42,7 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun `onSearchTextChange getMedicinesUseCase if query length is greater or equal than three`() = runTest {
+    fun `onSearchTextChange getMedicinesUseCase if query length is greater or equal than min query length`() = runTest {
         // Given
         val query = "Medicine"
         val medicinesList = listOf(Medicine("001", "Medicine 1"), Medicine("002", "Medicine 2"))
