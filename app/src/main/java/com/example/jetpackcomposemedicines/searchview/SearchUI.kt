@@ -10,12 +10,14 @@ import androidx.compose.runtime.produceState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
+import com.example.jetpackcomposemedicines.NavRoutes
 import com.example.jetpackcomposemedicines.components.SearchBarUI
 import com.example.jetpackcomposemedicines.data.model.Medicine
 
@@ -23,6 +25,7 @@ import com.example.jetpackcomposemedicines.data.model.Medicine
 @Composable
 fun SearchUI(navHostController: NavHostController, searchViewModel: SearchViewModel) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     val searchModelState by produceState(
         initialValue = SearchModelState.Empty,
@@ -40,8 +43,9 @@ fun SearchUI(navHostController: NavHostController, searchViewModel: SearchViewMo
         onClearClick = { searchViewModel.onClearClick() },
         matchesFound = searchModelState.medicines.isNotEmpty()
     ) {
-        Medicines(medicines = searchModelState.medicines) {medicine ->
-            //navHostController.navigate(route = "${NavRoutes.Detail.route}?nregistro=${medicine.nregistro}")
+        Medicines(medicines = searchModelState.medicines) { medicine ->
+            navHostController.navigate(route = "${NavRoutes.Detail.route}?id=${medicine.id}")
+            keyboardController?.hide()
         }
     }
 }
@@ -62,7 +66,7 @@ fun MedicineRow(medicine: Medicine, onClick: () -> Unit) {
         .fillMaxWidth()
         .padding(8.dp)
         .clickable { onClick() }) {
-        Text(text = medicine.nombre, fontSize = 14.sp, fontWeight = FontWeight.Normal)
+        Text(text = medicine.name, fontSize = 14.sp, fontWeight = FontWeight.Normal)
         Spacer(modifier = Modifier.height(2.dp))
     }
 }

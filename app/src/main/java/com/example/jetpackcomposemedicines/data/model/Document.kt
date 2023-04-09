@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class Document(
     @SerializedName("tipo")
-    val tipo: Int,
+    val type: Int,
     @SerializedName("url")
-    val url: String,
+    val url: String?,
     @SerializedName("urlHtml")
-    val urlHtml: String
+    val urlHtml: String?
 )

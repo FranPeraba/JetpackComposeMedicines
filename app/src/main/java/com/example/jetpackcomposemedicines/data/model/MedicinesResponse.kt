@@ -10,6 +10,6 @@ data class MedicinesResponse(
     @SerializedName("tamanioPagina")
     val tamanioPagina: Int,
     @SerializedName("resultados")
-    val resultados: List<Medicine>
+    val results: List<Medicine>
 ) {
 }

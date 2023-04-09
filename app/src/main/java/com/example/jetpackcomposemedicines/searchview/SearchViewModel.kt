@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,7 +41,7 @@ class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMe
             viewModelScope.launch {
                 try {
                     _matchedMedicines.value = getMedicinesUseCase(changedSearchText)
-                } catch (networkError: IOException) {
+                } catch (networkError: Exception) {
                     Log.e(SearchViewModel::class.simpleName, "Unable to get medicines")
                 }
             }

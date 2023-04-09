@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Medicine(
     @SerializedName("nregistro")
-    val nregistro: String,
+    val id: String,
     @SerializedName("nombre")
-    val nombre: String
+    val name: String
 )
