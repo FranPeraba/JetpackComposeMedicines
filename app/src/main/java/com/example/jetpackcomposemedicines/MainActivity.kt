@@ -24,10 +24,7 @@ class MainActivity : ComponentActivity() {
 
             JetpackComposeMedicinesTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
+                Surface(color = MaterialTheme.colors.background) {
                     AppNavHost(navHostController = navController)
                 }
             }
