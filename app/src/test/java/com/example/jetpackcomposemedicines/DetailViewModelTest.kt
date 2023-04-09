@@ -49,6 +49,7 @@ class DetailViewModelTest {
         // Given
         val medicine = MedicineResponse("53789", "Medicine name", listOf(Document(1, "A url", "A urlHtml")))
         coEvery { getMedicineUseCase(any()) } returns medicine
+
         val savedStateHandle = SavedStateHandle().apply {
             set("id", "53789")
         }
@@ -56,7 +57,7 @@ class DetailViewModelTest {
 
         // When
         detailViewModel = DetailViewModel(savedStateHandle, getMedicineUseCase, context)
-        
+
         // Then
         assertEquals(detailViewModel.medicine.value, medicine)
     }

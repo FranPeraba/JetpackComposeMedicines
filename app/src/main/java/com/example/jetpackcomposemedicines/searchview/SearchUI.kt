@@ -1,17 +1,25 @@
 package com.example.jetpackcomposemedicines.searchview
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -38,7 +46,7 @@ fun SearchUI(navHostController: NavHostController, searchViewModel: SearchViewMo
     }
     SearchBarUI(
         searchText = searchModelState.searchText,
-        placeholderText = "Busca tus medicamentos aquí",
+        placeholderText = "Medicamento, p.activo, c.nacional, n.registro",
         onSearchTextChanged = { searchViewModel.onSearchTextChanged(it) },
         onClearClick = { searchViewModel.onClearClick() },
         matchesFound = searchModelState.medicines.isNotEmpty()
@@ -62,11 +70,42 @@ fun Medicines(medicines: List<Medicine>?, onClick: (Medicine) -> Unit) {
 
 @Composable
 fun MedicineRow(medicine: Medicine, onClick: () -> Unit) {
-    Column(modifier = Modifier
+    Row(modifier = Modifier
         .fillMaxWidth()
         .padding(8.dp)
         .clickable { onClick() }) {
-        Text(text = medicine.name, fontSize = 14.sp, fontWeight = FontWeight.Normal)
-        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = medicine.name,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal,
+            textAlign = TextAlign.Start,
+            modifier = Modifier.weight(1f))
+        Icon(
+            imageVector = Icons.Filled.ArrowForward,
+            contentDescription = "Next",
+            tint = Color.Gray
+        )
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun Test() {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(8.dp)
+        .clickable { }) {
+        Text(
+            text = "Aspirina Complex 500 mg",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal,
+            textAlign = TextAlign.Start,
+            modifier = Modifier.weight(1f))
+        Icon(
+            imageVector = Icons.Filled.ArrowForward,
+            contentDescription = "Next",
+            tint = Color.Gray
+        )
+    }
+
 }

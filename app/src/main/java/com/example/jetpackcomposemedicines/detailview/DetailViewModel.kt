@@ -30,10 +30,8 @@ class DetailViewModel @Inject constructor(
     val medicine: StateFlow<MedicineResponse> = _medicine
 
     private var _showProgressBar: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showProgressBar: StateFlow<Boolean> = _showProgressBar
 
     private var _showNetworkError: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showNetworkError: StateFlow<Boolean> = _showNetworkError
 
     val detailModelState = combine(
         _medicine,
@@ -59,6 +57,7 @@ class DetailViewModel @Inject constructor(
                 _showProgressBar.value = false
             } catch (networkError: Exception) {
                 _showNetworkError.value = true
+                _showProgressBar.value = false
                 Log.e(DetailViewModel::class.simpleName, "Unable to get medicine")
             }
         }
