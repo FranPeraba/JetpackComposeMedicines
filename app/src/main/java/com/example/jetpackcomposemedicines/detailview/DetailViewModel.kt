@@ -1,10 +1,6 @@
 package com.example.jetpackcomposemedicines.detailview
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,20 +14,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-    private val getMedicineUseCase: GetMedicineUseCase,
-    private val context: Context
+class DetailViewModel @Inject constructor(savedStateHandle: SavedStateHandle,
+    private val getMedicineUseCase: GetMedicineUseCase
     ): ViewModel() {
 
     private val medicineId = savedStateHandle.get<String>("id")
 
-    private val _medicine: MutableStateFlow<MedicineResponse> = MutableStateFlow(MedicineResponse("", "", listOf()))
+    private val _medicine = MutableStateFlow(MedicineResponse())
     val medicine: StateFlow<MedicineResponse> = _medicine
 
-    private var _showProgressBar: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private var _showProgressBar = MutableStateFlow(false)
 
-    private var _showNetworkError: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private var _showNetworkError = MutableStateFlow(false)
 
     val detailModelState = combine(
         _medicine,
@@ -60,17 +54,6 @@ class DetailViewModel @Inject constructor(
                 _showProgressBar.value = false
                 Log.e(DetailViewModel::class.simpleName, "Unable to get medicine")
             }
-        }
-    }
-
-    fun openProspect() {
-        if (_medicine.value.docs.size >= 2) {
-            val intent = Intent(Intent.ACTION_VIEW,
-                Uri.parse(_medicine.value.docs[1].urlHtml ?: _medicine.value.docs[1].url))
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
-        } else {
-            Toast.makeText(context, "Sin prospecto", Toast.LENGTH_SHORT).show()
         }
     }
 }

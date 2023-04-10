@@ -1,5 +1,9 @@
 package com.example.jetpackcomposemedicines.detailview
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -10,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,6 +31,7 @@ import java.util.*
 @Composable
 fun DetailUI(navHostController: NavHostController, detailViewModel: DetailViewModel) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val context = LocalContext.current
 
     val detailModelState by produceState(
         initialValue = DetailModelState.Empty,
@@ -74,12 +80,27 @@ fun DetailUI(navHostController: NavHostController, detailViewModel: DetailViewMo
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { detailViewModel.openProspect() }) {
-                Text(text = stringResource(R.string.prospect).uppercase(Locale.ROOT), fontSize = 18.sp)
+                onClick = { openProspect(detailModelState, context) }) {
+                Text(
+                    text = stringResource(R.string.prospect).uppercase(Locale.ROOT),
+                    fontSize = 18.sp)
             }
         }
     }
 
+}
+
+fun openProspect(detailModelState: DetailModelState, context: Context) {
+    if (detailModelState.medicine.docs.size >= 2) {
+        val intent = Intent(Intent.ACTION_VIEW,
+            Uri.parse(detailModelState.medicine.docs[1].urlHtml
+                ?: detailModelState.medicine.docs[1].url))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+    } else {
+        Toast.makeText(context, context.resources.getString(R.string.no_prospect),
+            Toast.LENGTH_SHORT).show()
+    }
 }
 
 @Composable

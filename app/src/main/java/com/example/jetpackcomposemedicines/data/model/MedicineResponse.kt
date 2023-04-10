@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class MedicineResponse(
     @SerializedName("nregistro")
-    val id: String,
+    val id: String = "",
     @SerializedName("nombre")
-    val name: String,
+    val name: String = "",
     @SerializedName("docs")
-    val docs: List<Document>
+    val docs: List<Document> = listOf()
 )

@@ -53,10 +53,9 @@ class DetailViewModelTest {
         val savedStateHandle = SavedStateHandle().apply {
             set("id", "53789")
         }
-        val context = mockk<Context>(relaxed = true)
 
         // When
-        detailViewModel = DetailViewModel(savedStateHandle, getMedicineUseCase, context)
+        detailViewModel = DetailViewModel(savedStateHandle, getMedicineUseCase)
 
         // Then
         assertEquals(detailViewModel.medicine.value, medicine)

@@ -29,6 +29,7 @@ import com.example.jetpackcomposemedicines.NavRoutes
 import com.example.jetpackcomposemedicines.R
 import com.example.jetpackcomposemedicines.components.SearchBarUI
 import com.example.jetpackcomposemedicines.data.model.Medicine
+import com.example.jetpackcomposemedicines.ui.theme.JetpackComposeMedicinesTheme
 
 @ExperimentalComposeUiApi
 @Composable
@@ -90,21 +91,9 @@ fun MedicineRow(medicine: Medicine, onClick: () -> Unit) {
 
 @Composable
 @Preview(showBackground = true)
-fun Test() {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(8.dp)
-        .clickable { }) {
-        Text(
-            text = "DIAZEPAM AUROVITAS SPAIN 5 MG COMPRIMIDOS EFG",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Normal,
-            textAlign = TextAlign.Start,
-            modifier = Modifier.weight(1f))
-        Image(
-            painter = painterResource(id = R.drawable.ic_navigate_next),
-            contentDescription = "Next",
-            modifier = Modifier.align(Alignment.CenterVertically))
+fun DefaultPreview() {
+    JetpackComposeMedicinesTheme {
+        MedicineRow(Medicine("", "DIAZEPAM AUROVITAS SPAIN 5 MG COMPRIMIDOS EFG")){}
     }
 
 }

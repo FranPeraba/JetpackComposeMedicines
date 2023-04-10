@@ -11,4 +11,5 @@
     <string name="registry">Número de registro</string>
     <string name="prospect">Prospecto</string>
     <string name="back">Atrás</string>
+    <string name="no_prospect">Sin prospecto</string>
 </resources>
