@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -37,7 +38,7 @@ fun DetailUI(navHostController: NavHostController, detailViewModel: DetailViewMo
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        DetailTopAppBar(title = "Medicamento", onBackClick = {
+        DetailTopAppBar(title = stringResource(R.string.medicine), onBackClick = {
             navHostController.popBackStack()
         })
     }
@@ -53,7 +54,7 @@ fun DetailUI(navHostController: NavHostController, detailViewModel: DetailViewMo
         else if (detailModelState.showError) {
             Image(
                 painterResource(id = R.drawable.ic_connection_error),
-                contentDescription = "Error connection")
+                contentDescription = stringResource(R.string.error_connection))
         } else {
             Text(
                 text = detailModelState.medicine.name,
@@ -62,7 +63,7 @@ fun DetailUI(navHostController: NavHostController, detailViewModel: DetailViewMo
                 textAlign = TextAlign.Center)
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Número de registro",
+                text = stringResource(R.string.registry),
                 fontWeight = FontWeight.Normal,
                 fontSize = 18.sp)
             Spacer(modifier = Modifier.height(4.dp))
@@ -74,7 +75,7 @@ fun DetailUI(navHostController: NavHostController, detailViewModel: DetailViewMo
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { detailViewModel.openProspect() }) {
-                Text(text = "Prospecto".uppercase(Locale.ROOT), fontSize = 18.sp)
+                Text(text = stringResource(R.string.prospect).uppercase(Locale.ROOT), fontSize = 18.sp)
             }
         }
     }
@@ -93,7 +94,7 @@ fun DetailTopAppBar(title: String, onBackClick: () -> Unit) {
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
                     modifier = Modifier,
-                    contentDescription = "Atrás")
+                    contentDescription = stringResource(R.string.back))
             }
         }
     )

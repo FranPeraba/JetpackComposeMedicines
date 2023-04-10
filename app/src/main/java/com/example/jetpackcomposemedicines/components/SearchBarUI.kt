@@ -55,7 +55,7 @@ fun SearchBarUI(
                 .verticalScroll(rememberScrollState())) {
                 if (matchesFound) {
                     Text(
-                        text = "Resultados",
+                        text = stringResource(R.string.results),
                         modifier = Modifier.padding(8.dp),
                         fontWeight = FontWeight.Bold
                     )
@@ -85,7 +85,9 @@ fun SearchBar(
     TopAppBar(
         title = { Text(text = "") },
         actions = {
-            Icon(imageVector = Icons.Filled.Search, contentDescription = "Search medicines")
+            Icon(
+                imageVector = Icons.Filled.Search,
+                contentDescription = stringResource(R.string.search_medicines))
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -117,7 +119,7 @@ fun SearchBar(
                         IconButton(onClick = { onClearClick() }) {
                             Icon(
                                 imageVector = Icons.Filled.Close,
-                                contentDescription = stringResource(id = R.string.icn_search_clear_content_description)
+                                contentDescription = stringResource(R.string.icn_search_clear_content_description)
                             )
 
                         }
@@ -142,7 +144,7 @@ fun NoSearchResults() {
         modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Sin resultados")
+        Text(text = stringResource(R.string.no_results))
     }
 }
 

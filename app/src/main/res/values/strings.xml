@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">JetpackComposeMedicines</string>
     <string name="icn_search_clear_content_description">Limpiar búsqueda</string>
+    <string name="results">Resultados</string>
+    <string name="search_medicines">Buscar medicamentos</string>
+    <string name="no_results">Sin resultados</string>
+    <string name="place_holder_search_bar">Medicamento, p.activo, c.nacional, n.registro</string>
+    <string name="next">Siguiente</string>
+    <string name="medicine">Medicamento</string>
+    <string name="error_connection">Error de conexión</string>
+    <string name="registry">Número de registro</string>
+    <string name="prospect">Prospecto</string>
+    <string name="back">Atrás</string>
 </resources>

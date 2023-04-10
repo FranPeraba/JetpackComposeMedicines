@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,7 +47,7 @@ fun SearchUI(navHostController: NavHostController, searchViewModel: SearchViewMo
     }
     SearchBarUI(
         searchText = searchModelState.searchText,
-        placeholderText = "Medicamento, p.activo, c.nacional, n.registro",
+        placeholderText = stringResource(R.string.place_holder_search_bar),
         onSearchTextChanged = { searchViewModel.onSearchTextChanged(it) },
         onClearClick = { searchViewModel.onClearClick() },
         matchesFound = searchModelState.medicines.isNotEmpty()
@@ -81,8 +82,8 @@ fun MedicineRow(medicine: Medicine, onClick: () -> Unit) {
             textAlign = TextAlign.Start,
             modifier = Modifier.weight(1f))
         Image(
-            painter = painterResource(id = R.drawable.ic_navigate_next),
-            contentDescription = "Next",
+            painter = painterResource(R.drawable.ic_navigate_next),
+            contentDescription = stringResource(R.string.next),
             modifier = Modifier.align(Alignment.CenterVertically))
     }
 }
