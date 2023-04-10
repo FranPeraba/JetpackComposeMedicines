@@ -1,22 +1,21 @@
 package com.example.jetpackcomposemedicines.searchview
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +25,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import com.example.jetpackcomposemedicines.NavRoutes
+import com.example.jetpackcomposemedicines.R
 import com.example.jetpackcomposemedicines.components.SearchBarUI
 import com.example.jetpackcomposemedicines.data.model.Medicine
 
@@ -80,11 +80,10 @@ fun MedicineRow(medicine: Medicine, onClick: () -> Unit) {
             fontWeight = FontWeight.Normal,
             textAlign = TextAlign.Start,
             modifier = Modifier.weight(1f))
-        Icon(
-            imageVector = Icons.Filled.ArrowForward,
+        Image(
+            painter = painterResource(id = R.drawable.ic_navigate_next),
             contentDescription = "Next",
-            tint = Color.Gray
-        )
+            modifier = Modifier.align(Alignment.CenterVertically))
     }
 }
 
@@ -96,16 +95,15 @@ fun Test() {
         .padding(8.dp)
         .clickable { }) {
         Text(
-            text = "Aspirina Complex 500 mg",
+            text = "DIAZEPAM AUROVITAS SPAIN 5 MG COMPRIMIDOS EFG",
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             textAlign = TextAlign.Start,
             modifier = Modifier.weight(1f))
-        Icon(
-            imageVector = Icons.Filled.ArrowForward,
+        Image(
+            painter = painterResource(id = R.drawable.ic_navigate_next),
             contentDescription = "Next",
-            tint = Color.Gray
-        )
+            modifier = Modifier.align(Alignment.CenterVertically))
     }
 
 }

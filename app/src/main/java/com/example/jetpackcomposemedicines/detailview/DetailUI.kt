@@ -20,6 +20,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import com.example.jetpackcomposemedicines.R
+import java.util.*
 
 @Composable
 fun DetailUI(navHostController: NavHostController, detailViewModel: DetailViewModel) {
@@ -68,12 +69,12 @@ fun DetailUI(navHostController: NavHostController, detailViewModel: DetailViewMo
             Text(
                 text = detailModelState.medicine.id,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 18.sp)
+                fontSize = 24.sp)
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { detailViewModel.openProspect() }) {
-                Text(text = "Prospecto", fontSize = 18.sp)
+                Text(text = "Prospecto".uppercase(Locale.ROOT), fontSize = 18.sp)
             }
         }
     }
