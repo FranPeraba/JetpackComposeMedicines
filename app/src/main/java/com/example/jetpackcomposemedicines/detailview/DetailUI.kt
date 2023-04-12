@@ -24,12 +24,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavHostController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.jetpackcomposemedicines.R
 import java.util.*
 
 @Composable
-fun DetailUI(navHostController: NavHostController, detailViewModel: DetailViewModel) {
+fun DetailUI(
+    onBackClicked: () -> Unit = {},
+    detailViewModel: DetailViewModel = viewModel()) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val context = LocalContext.current
 
@@ -44,9 +46,10 @@ fun DetailUI(navHostController: NavHostController, detailViewModel: DetailViewMo
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        DetailTopAppBar(title = stringResource(R.string.medicine), onBackClick = {
-            navHostController.popBackStack()
-        })
+        DetailTopAppBar(
+            title = stringResource(R.string.medicine),
+            onBackClick = { onBackClicked() }
+        )
     }
 
     Column(
@@ -90,7 +93,7 @@ fun DetailUI(navHostController: NavHostController, detailViewModel: DetailViewMo
 
 }
 
-fun openProspect(detailModelState: DetailModelState, context: Context) {
+private fun openProspect(detailModelState: DetailModelState, context: Context) {
     if (detailModelState.medicine.docs.size >= 2) {
         val intent = Intent(Intent.ACTION_VIEW,
             Uri.parse(detailModelState.medicine.docs[1].urlHtml
@@ -104,7 +107,10 @@ fun openProspect(detailModelState: DetailModelState, context: Context) {
 }
 
 @Composable
-fun DetailTopAppBar(title: String, onBackClick: () -> Unit) {
+fun DetailTopAppBar(
+    title: String,
+    onBackClick: () -> Unit = {}
+) {
     TopAppBar(
         title = {
             Text(text = title, textAlign = TextAlign.Center)

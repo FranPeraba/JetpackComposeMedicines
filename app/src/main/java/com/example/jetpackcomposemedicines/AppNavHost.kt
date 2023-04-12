@@ -2,44 +2,40 @@ package com.example.jetpackcomposemedicines
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.jetpackcomposemedicines.detailview.DetailUI
-import com.example.jetpackcomposemedicines.detailview.DetailViewModel
 import com.example.jetpackcomposemedicines.searchview.SearchUI
-import com.example.jetpackcomposemedicines.searchview.SearchViewModel
 
 @ExperimentalComposeUiApi
 @Composable
-fun AppNavHost(navHostController: NavHostController){
+fun AppNavHost(){
+    val navController = rememberNavController()
 
     NavHost(
-        navController = navHostController,
+        navController = navController,
         startDestination = NavRoutes.Search.route
     ){
-        composable(NavRoutes.Search.route) {
-            val searchViewModel = hiltViewModel<SearchViewModel>()
+        composable(route = NavRoutes.Search.route) {
             SearchUI(
-                navHostController = navHostController,
-                searchViewModel = searchViewModel)
-
+                onMedicineClicked = { navController.navigate(route = "${NavRoutes.Detail.route}?id=${it.id}") }
+            )
         }
 
         composable(
-            "${NavRoutes.Detail.route}?id={id}", arguments = listOf(
+            route = "${NavRoutes.Detail.route}?id={id}",
+            arguments = listOf(
                 navArgument("id") {
                     type = NavType.StringType
                 }
             )
         ) {
-            val detailViewModel = hiltViewModel<DetailViewModel>()
             DetailUI(
-                navHostController = navHostController,
-                detailViewModel = detailViewModel)
+                onBackClicked = { navController.popBackStack() }
+            )
         }
     }
 

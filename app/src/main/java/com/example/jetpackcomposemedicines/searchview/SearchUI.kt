@@ -24,8 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavHostController
-import com.example.jetpackcomposemedicines.NavRoutes
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.jetpackcomposemedicines.R
 import com.example.jetpackcomposemedicines.components.SearchBarUI
 import com.example.jetpackcomposemedicines.data.model.Medicine
@@ -33,7 +32,10 @@ import com.example.jetpackcomposemedicines.ui.theme.JetpackComposeMedicinesTheme
 
 @ExperimentalComposeUiApi
 @Composable
-fun SearchUI(navHostController: NavHostController, searchViewModel: SearchViewModel) {
+fun SearchUI(
+    onMedicineClicked: (Medicine) -> Unit = {},
+    searchViewModel: SearchViewModel = viewModel()
+) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -54,14 +56,17 @@ fun SearchUI(navHostController: NavHostController, searchViewModel: SearchViewMo
         matchesFound = searchModelState.medicines.isNotEmpty()
     ) {
         Medicines(medicines = searchModelState.medicines) { medicine ->
-            navHostController.navigate(route = "${NavRoutes.Detail.route}?id=${medicine.id}")
+            onMedicineClicked(medicine)
             keyboardController?.hide()
         }
     }
 }
 
 @Composable
-fun Medicines(medicines: List<Medicine>?, onClick: (Medicine) -> Unit) {
+fun Medicines(
+    medicines: List<Medicine>?,
+    onClick: (Medicine) -> Unit
+) {
     medicines?.forEach { medicine ->
         MedicineRow(medicine = medicine) {
             onClick(medicine)
@@ -71,7 +76,10 @@ fun Medicines(medicines: List<Medicine>?, onClick: (Medicine) -> Unit) {
 }
 
 @Composable
-fun MedicineRow(medicine: Medicine, onClick: () -> Unit) {
+fun MedicineRow(
+    medicine: Medicine,
+    onClick: () -> Unit = {}
+) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(8.dp)
@@ -93,7 +101,7 @@ fun MedicineRow(medicine: Medicine, onClick: () -> Unit) {
 @Preview(showBackground = true)
 fun DefaultPreview() {
     JetpackComposeMedicinesTheme {
-        MedicineRow(Medicine("", "DIAZEPAM AUROVITAS SPAIN 5 MG COMPRIMIDOS EFG")){}
+        MedicineRow(Medicine("", "DIAZEPAM AUROVITAS SPAIN 5 MG COMPRIMIDOS EFG"))
     }
 
 }
