@@ -45,8 +45,8 @@ class DetailViewModelTest {
     @Test
     fun `getMedicine when initialize viewModel`() = runTest {
         // Given
-        val medicine = MedicineResponse("53789", "Medicine name", listOf(Document(1, "A url", "A urlHtml")))
-        coEvery { getMedicineUseCase(any()) } returns medicine
+        val expectedMedicine = MedicineResponse("53789", "Medicine name", listOf(Document(1, "A url", "A urlHtml")))
+        coEvery { getMedicineUseCase(any()) } returns expectedMedicine
 
         val savedStateHandle = SavedStateHandle().apply {
             set("id", "53789")
@@ -56,6 +56,6 @@ class DetailViewModelTest {
         detailViewModel = DetailViewModel(savedStateHandle, getMedicineUseCase)
 
         // Then
-        assertEquals(detailViewModel.uiState.value.medicine, medicine)
+        assertEquals(expectedMedicine, detailViewModel.uiState.value.medicine)
     }
 }

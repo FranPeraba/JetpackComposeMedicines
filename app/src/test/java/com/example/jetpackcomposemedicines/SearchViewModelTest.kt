@@ -45,14 +45,14 @@ class SearchViewModelTest {
     fun `onSearchTextChange getMedicinesUseCase if query length is greater or equal than min query length`() = runTest {
         // Given
         val query = "Medicine"
-        val medicinesList = listOf(Medicine("001", "Medicine 1"), Medicine("002", "Medicine 2"))
-        coEvery { getMedicinesUseCase(any()) } returns medicinesList
+        val expectedMedicinesList = listOf(Medicine("001", "Medicine 1"), Medicine("002", "Medicine 2"))
+        coEvery { getMedicinesUseCase(any()) } returns expectedMedicinesList
 
         // When
         searchViewModel.onSearchTextChanged(query)
 
         // Then
-        assertEquals(searchViewModel.matchedMedicines.value, medicinesList)
+        assertEquals(expectedMedicinesList, searchViewModel.matchedMedicines.value)
     }
 
     @Test
@@ -64,7 +64,7 @@ class SearchViewModelTest {
         searchViewModel.onSearchTextChanged(query)
 
         // Then
-        assertEquals(searchViewModel.matchedMedicines.value, emptyList<Medicine>())
+        assertEquals(emptyList<Medicine>(), searchViewModel.matchedMedicines.value)
     }
 
     @Test
@@ -79,7 +79,7 @@ class SearchViewModelTest {
         searchViewModel.onClearClick()
 
         // Then
-        assertEquals(searchViewModel.searchText.value, "")
-        assertEquals(searchViewModel.matchedMedicines.value, emptyList<Medicine>())
+        assertEquals("", searchViewModel.searchText.value)
+        assertEquals(emptyList<Medicine>(), searchViewModel.matchedMedicines.value)
     }
 }
