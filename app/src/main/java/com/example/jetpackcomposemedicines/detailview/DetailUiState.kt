@@ -2,12 +2,8 @@ package com.example.jetpackcomposemedicines.detailview
 
 import com.example.jetpackcomposemedicines.data.model.MedicineResponse
 
-data class DetailModelState(
-    val medicine: MedicineResponse = MedicineResponse("", "", listOf()),
+data class DetailUiState(
+    val medicine: MedicineResponse = MedicineResponse(),
     val showProgressBar: Boolean = false,
     val showError:Boolean = false
-) {
-    companion object {
-        val Empty = DetailModelState()
-    }
-}
+)

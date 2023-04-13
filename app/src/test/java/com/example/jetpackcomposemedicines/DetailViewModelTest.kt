@@ -1,6 +1,5 @@
 package com.example.jetpackcomposemedicines
 
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import com.example.jetpackcomposemedicines.data.model.Document
@@ -10,14 +9,13 @@ import com.example.jetpackcomposemedicines.domain.GetMedicineUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -58,6 +56,6 @@ class DetailViewModelTest {
         detailViewModel = DetailViewModel(savedStateHandle, getMedicineUseCase)
 
         // Then
-        assertEquals(detailViewModel.medicine.value, medicine)
+        assertEquals(detailViewModel.uiState.value.medicine, medicine)
     }
 }

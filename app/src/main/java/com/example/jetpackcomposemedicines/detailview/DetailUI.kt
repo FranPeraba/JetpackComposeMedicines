@@ -10,20 +10,17 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.jetpackcomposemedicines.R
 import java.util.*
@@ -32,18 +29,10 @@ import java.util.*
 fun DetailUI(
     onBackClicked: () -> Unit = {},
     detailViewModel: DetailViewModel = viewModel()) {
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
+
     val context = LocalContext.current
 
-    val detailModelState by produceState(
-        initialValue = DetailModelState.Empty,
-        key1 = lifecycle,
-        key2 = detailViewModel
-    ) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            detailViewModel.detailModelState.collect { value = it }
-        }
-    }
+    val detailUiState by detailViewModel.uiState.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize()) {
         DetailTopAppBar(
@@ -58,15 +47,15 @@ fun DetailUI(
             .wrapContentSize(Alignment.Center)
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally) {
-        if (detailModelState.showProgressBar)
+        if (detailUiState.showProgressBar)
             CircularProgressIndicator()
-        else if (detailModelState.showError) {
+        else if (detailUiState.showError) {
             Image(
                 painterResource(id = R.drawable.ic_connection_error),
                 contentDescription = stringResource(R.string.error_connection))
         } else {
             Text(
-                text = detailModelState.medicine.name,
+                text = detailUiState.medicine.name,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center)
@@ -77,13 +66,13 @@ fun DetailUI(
                 fontSize = 18.sp)
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = detailModelState.medicine.id,
+                text = detailUiState.medicine.id,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 24.sp)
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { openProspect(detailModelState, context) }) {
+                onClick = { openProspect(detailUiState, context) }) {
                 Text(
                     text = stringResource(R.string.prospect).uppercase(Locale.ROOT),
                     fontSize = 18.sp)
@@ -93,11 +82,11 @@ fun DetailUI(
 
 }
 
-private fun openProspect(detailModelState: DetailModelState, context: Context) {
-    if (detailModelState.medicine.docs.size >= 2) {
+private fun openProspect(detailUiState: DetailUiState, context: Context) {
+    if (detailUiState.medicine.docs.size >= 2) {
         val intent = Intent(Intent.ACTION_VIEW,
-            Uri.parse(detailModelState.medicine.docs[1].urlHtml
-                ?: detailModelState.medicine.docs[1].url))
+            Uri.parse(detailUiState.medicine.docs[1].urlHtml
+                ?: detailUiState.medicine.docs[1].url))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     } else {
