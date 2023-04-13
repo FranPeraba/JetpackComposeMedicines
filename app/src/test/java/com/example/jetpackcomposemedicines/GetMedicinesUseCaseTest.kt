@@ -7,12 +7,14 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.junit.Assert.*
 
 
+@ExperimentalCoroutinesApi
 class GetMedicinesUseCaseTest {
 
     private val medicine1 = Medicine("001", "Medicine 1")
@@ -31,7 +33,7 @@ class GetMedicinesUseCaseTest {
     }
 
     @Test
-    fun `getMedicines when requests medicines from repository`() = runBlocking {
+    fun `getMedicines when requests medicines from repository`() = runTest {
         // Given
         coEvery { medicinesRepository.getMedicines(any()) } returns medicinesList
 
