@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -85,13 +86,11 @@ fun DetailUI(
 private fun openProspect(detailUiState: DetailUiState, context: Context) {
     if (detailUiState.medicine.docs.size >= 2) {
         val intent = Intent(Intent.ACTION_VIEW,
-            Uri.parse(detailUiState.medicine.docs[1].urlHtml
-                ?: detailUiState.medicine.docs[1].url))
+            Uri.parse(detailUiState.medicine.docs[1].urlHtml ?: detailUiState.medicine.docs[1].url))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     } else {
-        Toast.makeText(context, context.resources.getString(R.string.no_prospect),
-            Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.resources.getString(R.string.no_prospect), Toast.LENGTH_SHORT).show()
     }
 }
 
@@ -114,4 +113,10 @@ fun DetailTopAppBar(
             }
         }
     )
+}
+
+@Composable
+@Preview(showBackground = true)
+fun DefaultPreview() {
+    DetailTopAppBar(title = "Medicamento")
 }
