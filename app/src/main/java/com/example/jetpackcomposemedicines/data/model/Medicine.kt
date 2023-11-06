@@ -8,5 +8,5 @@ data class Medicine(
     @SerializedName("nombre")
     val name: String,
     @SerializedName("fotos")
-    val photos: List<Foto> = listOf()
+    val photos: List<Foto>? = listOf()
 )

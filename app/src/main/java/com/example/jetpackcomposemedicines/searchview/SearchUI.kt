@@ -2,9 +2,11 @@ package com.example.jetpackcomposemedicines.searchview
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -13,6 +15,7 @@ import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -25,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.example.jetpackcomposemedicines.R
 import com.example.jetpackcomposemedicines.components.SearchBarUI
 import com.example.jetpackcomposemedicines.data.model.Medicine
@@ -84,12 +88,25 @@ fun MedicineRow(
         .fillMaxWidth()
         .padding(8.dp)
         .clickable { onClick() }) {
+        AsyncImage(
+            model = medicine.photos?.get(0)?.url,
+            modifier = Modifier
+                .size(75.dp)
+                .align(Alignment.CenterVertically)
+                .padding(
+                    PaddingValues(end = 6.dp)
+                ),
+            contentScale = ContentScale.Fit,
+            fallback = painterResource(R.drawable.no_disponible),
+            contentDescription = null)
         Text(
             text = medicine.name,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             textAlign = TextAlign.Start,
-            modifier = Modifier.weight(1f))
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically))
         Image(
             painter = painterResource(R.drawable.ic_navigate_next),
             contentDescription = stringResource(R.string.next),
