@@ -6,5 +6,7 @@ data class Medicine(
     @SerializedName("nregistro")
     val id: String,
     @SerializedName("nombre")
-    val name: String
+    val name: String,
+    @SerializedName("fotos")
+    val photos: List<Foto> = listOf()
 )
