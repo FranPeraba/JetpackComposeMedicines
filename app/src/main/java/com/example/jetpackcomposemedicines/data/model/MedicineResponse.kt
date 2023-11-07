@@ -8,5 +8,7 @@ data class MedicineResponse(
     @SerializedName("nombre")
     val name: String = "",
     @SerializedName("docs")
-    val docs: List<Document> = listOf()
+    val docs: List<Document> = listOf(),
+    @SerializedName("fotos")
+    val photos: List<Photo> = listOf()
 )

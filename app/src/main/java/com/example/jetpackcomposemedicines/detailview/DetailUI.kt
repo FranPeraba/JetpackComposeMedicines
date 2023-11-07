@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.example.jetpackcomposemedicines.R
 import java.util.*
 
@@ -55,6 +57,39 @@ fun DetailUI(
                 painterResource(id = R.drawable.ic_connection_error),
                 contentDescription = stringResource(R.string.error_connection))
         } else {
+            Row(
+                modifier = Modifier
+                    .wrapContentSize(Alignment.Center)
+            ) {
+                if (detailUiState.medicine.photos.size == 1) {
+                    AsyncImage(
+                        model = detailUiState.medicine.photos[0].url,
+                        modifier = Modifier
+                            .size(200.dp)
+                            .weight(1f),
+                        contentScale = ContentScale.Fit,
+                        fallback = painterResource(R.drawable.no_disponible),
+                        contentDescription = null)
+                } else if (detailUiState.medicine.photos.size == 2) {
+                    AsyncImage(
+                        model = detailUiState.medicine.photos[0].url,
+                        modifier = Modifier
+                            .size(200.dp)
+                            .weight(1f),
+                        contentScale = ContentScale.Fit,
+                        fallback = painterResource(R.drawable.no_disponible),
+                        contentDescription = null)
+                    AsyncImage(
+                        model = detailUiState.medicine.photos[1].url,
+                        modifier = Modifier
+                            .size(200.dp)
+                            .weight(1f),
+                        contentScale = ContentScale.Fit,
+                        fallback = painterResource(R.drawable.no_disponible),
+                        contentDescription = null)
+                }
+            }
+            Spacer(modifier = Modifier.height(24.dp))
             Text(
                 text = detailUiState.medicine.name,
                 fontWeight = FontWeight.SemiBold,
@@ -80,17 +115,18 @@ fun DetailUI(
             }
         }
     }
-
 }
 
 private fun openProspect(detailUiState: DetailUiState, context: Context) {
     if (detailUiState.medicine.docs.size >= 2) {
         val intent = Intent(Intent.ACTION_VIEW,
-            Uri.parse(detailUiState.medicine.docs[1].urlHtml ?: detailUiState.medicine.docs[1].url))
+            Uri.parse(detailUiState.medicine.docs[1].urlHtml ?:
+            detailUiState.medicine.docs[1].url))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     } else {
-        Toast.makeText(context, context.resources.getString(R.string.no_prospect), Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.resources.getString(R.string.no_prospect),
+            Toast.LENGTH_SHORT).show()
     }
 }
 
