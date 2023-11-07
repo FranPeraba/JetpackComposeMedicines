@@ -61,7 +61,7 @@ fun DetailUI(
                 modifier = Modifier
                     .wrapContentSize(Alignment.Center)
             ) {
-                if (detailUiState.medicine.photos.size == 1) {
+                if (detailUiState.medicine.photos.size == 2) {
                     AsyncImage(
                         model = detailUiState.medicine.photos[0].url,
                         modifier = Modifier
@@ -70,15 +70,7 @@ fun DetailUI(
                         contentScale = ContentScale.Fit,
                         fallback = painterResource(R.drawable.no_disponible),
                         contentDescription = null)
-                } else if (detailUiState.medicine.photos.size == 2) {
-                    AsyncImage(
-                        model = detailUiState.medicine.photos[0].url,
-                        modifier = Modifier
-                            .size(200.dp)
-                            .weight(1f),
-                        contentScale = ContentScale.Fit,
-                        fallback = painterResource(R.drawable.no_disponible),
-                        contentDescription = null)
+                    Spacer(modifier = Modifier.width(4.dp))
                     AsyncImage(
                         model = detailUiState.medicine.photos[1].url,
                         modifier = Modifier
