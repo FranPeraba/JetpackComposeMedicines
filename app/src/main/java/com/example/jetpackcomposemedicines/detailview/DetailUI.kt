@@ -69,7 +69,7 @@ fun DetailUI(
                             .weight(1f),
                         contentScale = ContentScale.Fit,
                         fallback = painterResource(R.drawable.no_disponible),
-                        contentDescription = null)
+                        contentDescription = "materialas")
                     Spacer(modifier = Modifier.width(4.dp))
                     AsyncImage(
                         model = detailUiState.medicine.photos[1].url,
@@ -78,7 +78,7 @@ fun DetailUI(
                             .weight(1f),
                         contentScale = ContentScale.Fit,
                         fallback = painterResource(R.drawable.no_disponible),
-                        contentDescription = null)
+                        contentDescription = "formafarmac")
                 }
             }
             Spacer(modifier = Modifier.height(24.dp))

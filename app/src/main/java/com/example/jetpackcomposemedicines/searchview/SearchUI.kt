@@ -98,7 +98,7 @@ fun MedicineRow(
                 ),
             contentScale = ContentScale.Fit,
             fallback = painterResource(R.drawable.no_disponible),
-            contentDescription = null)
+            contentDescription = "materialas")
         Text(
             text = medicine.name,
             fontSize = 16.sp,
