@@ -87,7 +87,8 @@ fun MedicineRow(
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(8.dp)
-        .clickable { onClick() }) {
+        .clickable(onClick = onClick)
+    ) {
         AsyncImage(
             model = medicine.photos?.get(0)?.url,
             modifier = Modifier

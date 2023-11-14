@@ -40,7 +40,7 @@ fun DetailUI(
     Column(modifier = Modifier.fillMaxSize()) {
         DetailTopAppBar(
             title = stringResource(R.string.medicine),
-            onBackClick = { onBackClicked() }
+            onBackClick = onBackClicked
         )
     }
 
@@ -133,7 +133,7 @@ fun DetailTopAppBar(
         },
         modifier = Modifier.fillMaxWidth(),
         navigationIcon = {
-            IconButton(onClick = { onBackClick() }) {
+            IconButton(onClick = onBackClick) {
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
                     modifier = Modifier,

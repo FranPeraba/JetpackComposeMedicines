@@ -150,7 +150,7 @@ fun SearchBar(
                         enter = fadeIn(),
                         exit = fadeOut()
                     ) {
-                        IconButton(onClick = { onClearClick() }) {
+                        IconButton(onClick = onClearClick) {
                             Icon(
                                 imageVector = Icons.Filled.Close,
                                 contentDescription = stringResource(R.string.icn_search_clear_content_description)
