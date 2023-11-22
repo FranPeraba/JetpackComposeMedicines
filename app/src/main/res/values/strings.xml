@@ -4,7 +4,7 @@
     <string name="results">Resultados</string>
     <string name="search_medicines">Buscar medicamentos</string>
     <string name="no_results">Sin resultados</string>
-    <string name="place_holder_search_bar">Medicamento, p.activo, c.nacional, n.registro</string>
+    <string name="place_holder_search_bar">Medicamento, p.activo, c.nacional</string>
     <string name="next">Siguiente</string>
     <string name="medicine">Medicamento</string>
     <string name="error_connection">Error de conexión</string>

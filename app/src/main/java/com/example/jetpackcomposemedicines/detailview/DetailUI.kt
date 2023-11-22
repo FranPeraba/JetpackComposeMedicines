@@ -5,15 +5,32 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -26,8 +43,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.jetpackcomposemedicines.R
-import java.util.*
+import com.example.jetpackcomposemedicines.ui.theme.JetpackComposeMedicinesTheme
+import com.example.jetpackcomposemedicines.ui.theme.Shapes
+import java.util.Locale
 
+@ExperimentalMaterial3Api
 @Composable
 fun DetailUI(
     onBackClicked: () -> Unit = {},
@@ -100,10 +120,13 @@ fun DetailUI(
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(12.dp),
+                shape = Shapes.medium,
                 onClick = { openProspect(detailUiState, context) }) {
                 Text(
                     text = stringResource(R.string.prospect).uppercase(Locale.ROOT),
-                    fontSize = 18.sp)
+                    fontSize = 18.sp,
+                    color = Color.White)
             }
         }
     }
@@ -122,6 +145,7 @@ private fun openProspect(detailUiState: DetailUiState, context: Context) {
     }
 }
 
+@ExperimentalMaterial3Api
 @Composable
 fun DetailTopAppBar(
     title: String,
@@ -129,22 +153,34 @@ fun DetailTopAppBar(
 ) {
     TopAppBar(
         title = {
-            Text(text = title, textAlign = TextAlign.Center)
+            Text(text = title)
         },
         modifier = Modifier.fillMaxWidth(),
         navigationIcon = {
             IconButton(onClick = onBackClick) {
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
-                    modifier = Modifier,
                     contentDescription = stringResource(R.string.back))
             }
         }
     )
 }
 
+@ExperimentalMaterial3Api
 @Composable
-@Preview(showBackground = true)
+@Preview()
 fun DefaultPreview() {
-    DetailTopAppBar(title = "Medicamento")
+    //DetailTopAppBar(title = "Medicamento")
+    JetpackComposeMedicinesTheme {
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(12.dp),
+            shape = Shapes.medium,
+            onClick = {  }) {
+            Text(
+                text = stringResource(R.string.prospect).uppercase(Locale.ROOT),
+                fontSize = 18.sp,
+                color = Color.White)
+        }
+    }
 }

@@ -16,7 +16,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMedicinesUseCase) :
     ViewModel() {
 
-    private val minQueryLength = 4;
+    private val minQueryLength = 4
 
     private val _searchText = MutableStateFlow("")
     val searchText: StateFlow<String> = _searchText

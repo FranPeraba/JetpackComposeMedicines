@@ -1,8 +1,6 @@
 package com.example.jetpackcomposemedicines.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,47 +8,41 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.semantics.isTraversalGroup
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.example.jetpackcomposemedicines.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalComposeUiApi
 @Composable
 fun SearchBarUI(
@@ -70,104 +62,68 @@ fun SearchBarUI(
             }
         }
     }
-    Box {
-        Column(
+    val minQueryLength = 4
+    var active by rememberSaveable { mutableStateOf(false) }
+
+    Box(Modifier.fillMaxSize()) {
+        Box(
             modifier = Modifier
-                .fillMaxSize()
+                .semantics { isTraversalGroup = true }
+                .zIndex(1f)
+                .fillMaxWidth()
         ) {
             SearchBar(
-                searchText,
-                placeholderText,
-                onSearchTextChanged,
-                onClearClick,
-                keyboardController
-            )
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(nestedScrollConnection)
-                .verticalScroll(rememberScrollState())
-            ) {
-                if (matchesFound) {
-                    Text(
-                        text = stringResource(R.string.results),
-                        modifier = Modifier.padding(8.dp),
-                        fontWeight = FontWeight.Bold
-                    )
-                    results()
-                } else {
-                    if (searchText.isNotEmpty()) {
-                        NoSearchResults()
-                    }
-                }
-            }
-        }
-    }
-}
-
-@ExperimentalComposeUiApi
-@Composable
-fun SearchBar(
-    searchText: String,
-    placeholderText: String = "",
-    onSearchTextChanged: (String) -> Unit = {},
-    onClearClick: () -> Unit = {},
-    keyboardController: SoftwareKeyboardController?
-) {
-    var showClearButton by remember { mutableStateOf(false) }
-    val focusRequester = remember { FocusRequester() }
-
-    TopAppBar(
-        title = { Text(text = "") },
-        actions = {
-            Icon(
-                imageVector = Icons.Filled.Search,
-                contentDescription = stringResource(R.string.search_medicines))
-            OutlinedTextField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 2.dp)
-                    .onFocusChanged { focusState -> showClearButton = (focusState.isFocused) }
-                    .focusRequester(focusRequester),
-                value = searchText,
-                onValueChange = onSearchTextChanged,
+                    .align(Alignment.TopCenter)
+                    .padding(top = 8.dp),
+                query = searchText,
+                onQueryChange = onSearchTextChanged,
+                onSearch = { active = false },
+                active = active,
+                onActiveChange = { active = it },
                 placeholder = {
                     Text(
                         text = placeholderText,
-                        color = Color.LightGray,
+                        color = Color.Gray,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 },
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    backgroundColor = Color.Transparent,
-                    cursorColor = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
-                ),
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Rounded.Search,
+                        contentDescription = stringResource(R.string.search_medicines))
+                },
                 trailingIcon = {
-                    AnimatedVisibility(
-                        visible = showClearButton,
-                        enter = fadeIn(),
-                        exit = fadeOut()
-                    ) {
+                    if (searchText.isNotEmpty()) {
                         IconButton(onClick = onClearClick) {
                             Icon(
-                                imageVector = Icons.Filled.Close,
-                                contentDescription = stringResource(R.string.icn_search_clear_content_description)
+                                imageVector = Icons.Rounded.Close,
+                                contentDescription = stringResource(
+                                    R.string.icn_search_clear_content_description)
                             )
-
                         }
                     }
-                },
-                maxLines = 1,
-                singleLine = true,
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() })
+                }
             )
-        })
-
-    LaunchedEffect(key1 = Unit) {
-        focusRequester.requestFocus()
+            {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .nestedScroll(nestedScrollConnection)
+                        .verticalScroll(rememberScrollState())
+                        .background(Color.White)
+                ) {
+                    if (matchesFound) {
+                        results()
+                    } else {
+                        if (searchText.length >= minQueryLength) {
+                            NoSearchResults()
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -176,19 +132,25 @@ fun SearchBar(
 fun NoSearchResults() {
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .padding(top = 8.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = stringResource(R.string.no_results))
+        Text(
+            text = stringResource(R.string.no_results),
+            fontSize = 18.sp)
     }
 }
 
 
 @ExperimentalComposeUiApi
-@Preview(showSystemUi = false)
+@Preview(showSystemUi = true)
 @Composable
 fun Preview() {
-    SearchBarUI(searchText = "", "Busca tus medicamentos aquí", matchesFound = false)
+    SearchBarUI(
+        searchText = "",
+        stringResource(R.string.place_holder_search_bar),
+        matchesFound = true)
 
 }
