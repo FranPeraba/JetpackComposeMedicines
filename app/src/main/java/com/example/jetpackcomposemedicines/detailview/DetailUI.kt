@@ -78,8 +78,7 @@ fun DetailUI(
                 contentDescription = stringResource(R.string.error_connection))
         } else {
             Row(
-                modifier = Modifier
-                    .wrapContentSize(Alignment.Center)
+                modifier = Modifier.wrapContentSize(Alignment.Center)
             ) {
                 if (detailUiState.medicine.photos.size == 2) {
                     AsyncImage(
@@ -89,7 +88,7 @@ fun DetailUI(
                             .weight(1f),
                         contentScale = ContentScale.Fit,
                         fallback = painterResource(R.drawable.no_disponible),
-                        contentDescription = "materialas")
+                        contentDescription = null)
                     Spacer(modifier = Modifier.width(4.dp))
                     AsyncImage(
                         model = detailUiState.medicine.photos[1].url,
@@ -98,7 +97,7 @@ fun DetailUI(
                             .weight(1f),
                         contentScale = ContentScale.Fit,
                         fallback = painterResource(R.drawable.no_disponible),
-                        contentDescription = "formafarmac")
+                        contentDescription = null)
                 }
             }
             Spacer(modifier = Modifier.height(24.dp))
@@ -133,15 +132,14 @@ fun DetailUI(
 }
 
 private fun openProspect(detailUiState: DetailUiState, context: Context) {
-    if (detailUiState.medicine.docs.size >= 2) {
+    if (detailUiState.medicine.docs.size == 2) {
         val intent = Intent(Intent.ACTION_VIEW,
             Uri.parse(detailUiState.medicine.docs[1].urlHtml ?:
             detailUiState.medicine.docs[1].url))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     } else {
-        Toast.makeText(context, context.resources.getString(R.string.no_prospect),
-            Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.resources.getString(R.string.no_prospect), Toast.LENGTH_SHORT).show()
     }
 }
 

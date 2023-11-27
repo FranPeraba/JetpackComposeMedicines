@@ -94,12 +94,10 @@ fun MedicineRow(
             modifier = Modifier
                 .size(75.dp)
                 .align(Alignment.CenterVertically)
-                .padding(
-                    PaddingValues(end = 6.dp)
-                ),
+                .padding(PaddingValues(end = 6.dp)),
             contentScale = ContentScale.Fit,
             fallback = painterResource(R.drawable.no_disponible),
-            contentDescription = "materialas")
+            contentDescription = null)
         Text(
             text = medicine.name,
             fontSize = 16.sp,
