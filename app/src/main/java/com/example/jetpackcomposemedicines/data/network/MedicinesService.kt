@@ -15,10 +15,10 @@ class MedicinesService @Inject constructor(private val api: MedicinesApiClient) 
         }
     }
 
-    suspend fun getMedicine(query: String): MedicineResponse? {
+    suspend fun getMedicine(query: String): MedicineResponse {
         return withContext(Dispatchers.IO){
             val response = api.getMedicine(query)
-            response.body()
+            response.body() ?: MedicineResponse()
         }
     }
 }

@@ -11,7 +11,7 @@ class MedicinesRepository @Inject constructor(private val medicinesService: Medi
         return medicinesService.getMedicines(query)
     }
 
-    suspend fun getMedicine(query: String): MedicineResponse? {
+    suspend fun getMedicine(query: String): MedicineResponse {
         return medicinesService.getMedicine(query)
     }
 }

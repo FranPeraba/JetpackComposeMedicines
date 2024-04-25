@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class GetMedicineUseCase @Inject constructor(private val medicinesRepository: MedicinesRepository) {
 
-    suspend operator fun invoke(query: String): MedicineResponse?{
+    suspend operator fun invoke(query: String): MedicineResponse {
         return medicinesRepository.getMedicine(query)
     }
 }

@@ -33,11 +33,13 @@ class DetailViewModel @Inject constructor(savedStateHandle: SavedStateHandle,
                 currentState.copy(showProgressBar = true)
             }
             try {
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        medicine = getMedicineUseCase(medicineId!!)!!,
-                        showProgressBar = false
-                    )
+                if (medicineId != null) {
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            medicine = getMedicineUseCase(medicineId),
+                            showProgressBar = false
+                        )
+                    }
                 }
             } catch (networkError: Exception) {
                 _uiState.update { currentState ->
