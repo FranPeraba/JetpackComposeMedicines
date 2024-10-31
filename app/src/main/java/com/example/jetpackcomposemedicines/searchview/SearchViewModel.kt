@@ -16,8 +16,6 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMedicinesUseCase) :
     ViewModel() {
 
-    private val minQueryLength = 4
-
     private val _searchText = MutableStateFlow("")
     val searchText: StateFlow<String> = _searchText
 
@@ -31,7 +29,7 @@ class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMe
         )
     }
 
-    fun onSearchTextChanged(changedSearchText: String) {
+    fun onSearchTextChanged(changedSearchText: String, minQueryLength: Int) {
         _searchText.value = changedSearchText
         if (changedSearchText.isEmpty()) {
             _matchedMedicines.value = emptyList()

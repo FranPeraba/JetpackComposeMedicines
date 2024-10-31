@@ -42,6 +42,7 @@ fun SearchUI(
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val keyboardController = LocalSoftwareKeyboardController.current
+    val minQueryLength = 4
 
     val searchModelState by produceState(
         initialValue = SearchModelState.Empty,
@@ -55,9 +56,10 @@ fun SearchUI(
     SearchBarUI(
         searchText = searchModelState.searchText,
         placeholderText = stringResource(R.string.place_holder_search_bar),
-        onSearchTextChanged = { searchViewModel.onSearchTextChanged(it) },
+        onSearchTextChanged = { searchViewModel.onSearchTextChanged(it, minQueryLength) },
         onClearClick = { searchViewModel.onClearClick() },
-        matchesFound = searchModelState.medicines.isNotEmpty()
+        matchesFound = searchModelState.medicines.isNotEmpty(),
+        minQueryLength = minQueryLength
     ) {
         Medicines(medicines = searchModelState.medicines) { medicine ->
             onMedicineClicked(medicine)
@@ -117,7 +119,7 @@ fun MedicineRow(
 @Preview(showBackground = true)
 fun DefaultPreview() {
     JetpackComposeMedicinesTheme {
-        MedicineRow(Medicine("", "DIAZEPAM AUROVITAS SPAIN 5 MG COMPRIMIDOS EFG"))
+        //MedicineRow(Medicine("", "DIAZEPAM AUROVITAS SPAIN 5 MG COMPRIMIDOS EFG"))
     }
 
 }

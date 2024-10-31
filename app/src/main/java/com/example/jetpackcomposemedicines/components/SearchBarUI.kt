@@ -51,6 +51,7 @@ fun SearchBarUI(
     onSearchTextChanged: (String) -> Unit = {},
     onClearClick: () -> Unit = {},
     matchesFound: Boolean,
+    minQueryLength: Int,
     results: @Composable () -> Unit = {}
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -62,7 +63,7 @@ fun SearchBarUI(
             }
         }
     }
-    val minQueryLength = 4
+
     var active by rememberSaveable { mutableStateOf(false) }
 
     Box(Modifier.fillMaxSize()) {
@@ -151,6 +152,7 @@ fun Preview() {
     SearchBarUI(
         searchText = "",
         stringResource(R.string.place_holder_search_bar),
-        matchesFound = true)
+        matchesFound = true,
+        minQueryLength = 4)
 
 }
