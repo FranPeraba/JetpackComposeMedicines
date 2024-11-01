@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Search
@@ -108,18 +108,20 @@ fun SearchBarUI(
                 }
             )
             {
-                Column(
+                LazyColumn(
+                    state = rememberLazyListState(),
                     modifier = Modifier
                         .fillMaxSize()
                         .nestedScroll(nestedScrollConnection)
-                        .verticalScroll(rememberScrollState())
                         .background(Color.White)
                 ) {
-                    if (matchesFound) {
-                        results()
-                    } else {
-                        if (searchText.length >= minQueryLength) {
-                            NoSearchResults()
+                    item {
+                        if (matchesFound) {
+                            results()
+                        } else {
+                            if (searchText.length >= minQueryLength) {
+                                NoSearchResults()
+                            }
                         }
                     }
                 }
