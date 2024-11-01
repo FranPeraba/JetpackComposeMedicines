@@ -25,6 +25,7 @@ class SearchViewModelTest {
     private lateinit var getMedicinesUseCase: GetMedicinesUseCase
 
     private lateinit var searchViewModel: SearchViewModel
+    private val queryLength = 4
 
     @get:Rule
     var rule: InstantTaskExecutorRule = InstantTaskExecutorRule()
@@ -49,7 +50,7 @@ class SearchViewModelTest {
         coEvery { getMedicinesUseCase(any()) } returns expectedMedicinesList
 
         // When
-        searchViewModel.onSearchTextChanged(query)
+        searchViewModel.onSearchTextChanged(query, queryLength)
 
         // Then
         assertEquals(expectedMedicinesList, searchViewModel.matchedMedicines.value)
@@ -61,7 +62,7 @@ class SearchViewModelTest {
         val query = ""
 
         // When
-        searchViewModel.onSearchTextChanged(query)
+        searchViewModel.onSearchTextChanged(query, queryLength)
 
         // Then
         assertEquals(emptyList<Medicine>(), searchViewModel.matchedMedicines.value)
@@ -75,7 +76,7 @@ class SearchViewModelTest {
         coEvery { getMedicinesUseCase(any()) } returns medicinesList
 
         // When
-        searchViewModel.onSearchTextChanged(query)
+        searchViewModel.onSearchTextChanged(query, queryLength)
         searchViewModel.onClearClick()
 
         // Then
