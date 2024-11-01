@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -37,7 +37,7 @@ import com.example.jetpackcomposemedicines.ui.theme.JetpackComposeMedicinesTheme
 @ExperimentalComposeUiApi
 @Composable
 fun SearchUI(
-    onMedicineClicked: (Medicine) -> Unit = {},
+    onMedicineClicked: (String) -> Unit = {},
     searchViewModel: SearchViewModel = viewModel()
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -62,7 +62,7 @@ fun SearchUI(
         minQueryLength = minQueryLength
     ) {
         Medicines(medicines = searchModelState.medicines) { medicine ->
-            onMedicineClicked(medicine)
+            onMedicineClicked(medicine.id)
             keyboardController?.hide()
         }
     }

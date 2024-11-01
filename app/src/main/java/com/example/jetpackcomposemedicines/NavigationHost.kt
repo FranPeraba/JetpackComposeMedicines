@@ -4,48 +4,36 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.example.jetpackcomposemedicines.detailview.DetailUI
 import com.example.jetpackcomposemedicines.detailview.DetailViewModel
 import com.example.jetpackcomposemedicines.searchview.SearchUI
 import com.example.jetpackcomposemedicines.searchview.SearchViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
-@ExperimentalComposeUiApi
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun AppNavHost(){
+fun NavigationHost() {
     val navController = rememberNavController()
-
-    NavHost(
-        navController = navController,
-        startDestination = NavRoutes.Search.route
-    ){
-        composable(route = NavRoutes.Search.route) {
+    NavHost(navController = navController, startDestination = SearchView) {
+        composable<SearchView> {
             val searchViewModel = hiltViewModel<SearchViewModel>()
             SearchUI(
-                onMedicineClicked = { navController.navigate(route = "${NavRoutes.Detail.route}?id=${it.id}") },
+                onMedicineClicked = { id -> navController.navigate(DetailView(id = id)) },
                 searchViewModel = searchViewModel
             )
         }
-
-        composable(
-            route = "${NavRoutes.Detail.route}?id={id}",
-            arguments = listOf(
-                navArgument("id") {
-                    type = NavType.StringType
-                }
-            )
-        ) {
-            val detailViewModel = hiltViewModel<DetailViewModel>()
+        composable<DetailView> { backStackEntry ->
+            val detailView: DetailView = backStackEntry.toRoute()
+            val detailViewModel = hiltViewModel<DetailViewModel, DetailViewModel.DetailViewModelFactory> { factory ->
+                factory.create(detailView.id)
+            }
             DetailUI(
                 onBackClicked = { navController.popBackStack() },
                 detailViewModel = detailViewModel
             )
         }
     }
-
 }

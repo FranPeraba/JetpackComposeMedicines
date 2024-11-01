@@ -1,7 +1,6 @@
 package com.example.jetpackcomposemedicines
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.SavedStateHandle
 import com.example.jetpackcomposemedicines.data.model.Document
 import com.example.jetpackcomposemedicines.data.model.MedicineResponse
 import com.example.jetpackcomposemedicines.detailview.DetailViewModel
@@ -48,12 +47,8 @@ class DetailViewModelTest {
         val expectedMedicine = MedicineResponse("53789", "Medicine name", listOf(Document(1, "A url", "A urlHtml")))
         coEvery { getMedicineUseCase(any()) } returns expectedMedicine
 
-        val savedStateHandle = SavedStateHandle().apply {
-            set("id", "53789")
-        }
-
         // When
-        detailViewModel = DetailViewModel(savedStateHandle, getMedicineUseCase)
+        detailViewModel = DetailViewModel(expectedMedicine.id, getMedicineUseCase)
 
         // Then
         assertEquals(expectedMedicine, detailViewModel.uiState.value.medicine)

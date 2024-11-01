@@ -31,14 +31,14 @@ class SearchViewModel @Inject constructor(private val getMedicinesUseCase: GetMe
 
     fun onSearchTextChanged(changedSearchText: String, minQueryLength: Int) {
         _searchText.value = changedSearchText
-        if (changedSearchText.isEmpty()) {
+        if (_searchText.value.isEmpty() || _searchText.value.length < minQueryLength) {
             _matchedMedicines.value = emptyList()
             return
         }
-        if (changedSearchText.length >= minQueryLength) {
+        if (_searchText.value.length >= minQueryLength) {
             viewModelScope.launch {
                 try {
-                    _matchedMedicines.value = getMedicinesUseCase(changedSearchText)
+                    _matchedMedicines.value = getMedicinesUseCase(_searchText.value)
                 } catch (networkError: Exception) {
                     Log.e(SearchViewModel::class.simpleName, "Unable to get medicines")
                 }
