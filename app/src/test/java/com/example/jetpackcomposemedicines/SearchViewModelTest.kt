@@ -6,6 +6,7 @@ import com.example.jetpackcomposemedicines.domain.GetMedicinesUseCase
 import com.example.jetpackcomposemedicines.searchview.SearchViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -53,6 +54,7 @@ class SearchViewModelTest {
         searchViewModel.onSearchTextChanged(query, queryLength)
 
         // Then
+        coVerify(exactly = 1) { getMedicinesUseCase(any()) }
         assertEquals(expectedMedicinesList, searchViewModel.matchedMedicines.value)
     }
 
@@ -65,6 +67,7 @@ class SearchViewModelTest {
         searchViewModel.onSearchTextChanged(query, queryLength)
 
         // Then
+        coVerify(exactly = 0) { getMedicinesUseCase(any()) }
         assertEquals(emptyList<Medicine>(), searchViewModel.matchedMedicines.value)
     }
 
@@ -80,6 +83,7 @@ class SearchViewModelTest {
         searchViewModel.onClearClick()
 
         // Then
+        coVerify(exactly = 1) { getMedicinesUseCase(any()) }
         assertEquals("", searchViewModel.searchText.value)
         assertEquals(emptyList<Medicine>(), searchViewModel.matchedMedicines.value)
     }

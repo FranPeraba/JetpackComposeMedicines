@@ -40,6 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.jetpackcomposemedicines.R
@@ -54,8 +55,7 @@ fun DetailUI(
     detailViewModel: DetailViewModel = viewModel()) {
 
     val context = LocalContext.current
-
-    val detailUiState by detailViewModel.uiState.collectAsState()
+    val detailUiState by detailViewModel.uiState.collectAsStateWithLifecycle()
 
     Column(modifier = Modifier.fillMaxSize()) {
         DetailTopAppBar(

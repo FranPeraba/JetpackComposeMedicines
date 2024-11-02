@@ -1,12 +1,14 @@
 package com.example.jetpackcomposemedicines
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import app.cash.turbine.test
 import com.example.jetpackcomposemedicines.data.model.Document
 import com.example.jetpackcomposemedicines.data.model.MedicineResponse
 import com.example.jetpackcomposemedicines.detailview.DetailViewModel
 import com.example.jetpackcomposemedicines.domain.GetMedicineUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,8 +27,6 @@ class DetailViewModelTest {
     @RelaxedMockK
     private lateinit var getMedicineUseCase: GetMedicineUseCase
 
-    private lateinit var detailViewModel: DetailViewModel
-
     @get:Rule
     var rule: InstantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -42,15 +42,19 @@ class DetailViewModelTest {
     }
 
     @Test
-    fun `getMedicine when initialize viewModel`() = runTest {
+    fun `load medicine when start flow in viewModel`() = runTest {
         // Given
         val expectedMedicine = MedicineResponse("53789", "Medicine name", listOf(Document(1, "A url", "A urlHtml")))
         coEvery { getMedicineUseCase(any()) } returns expectedMedicine
 
         // When
-        detailViewModel = DetailViewModel(expectedMedicine.id, getMedicineUseCase)
+        val underTest = DetailViewModel("53789", getMedicineUseCase)
 
         // Then
-        assertEquals(expectedMedicine, detailViewModel.uiState.value.medicine)
+        underTest.uiState.test {
+            val item = awaitItem()
+            coVerify(exactly = 1) { getMedicineUseCase(any()) }
+            assertEquals(item.medicine, underTest.uiState.value.medicine)
+        }
     }
 }

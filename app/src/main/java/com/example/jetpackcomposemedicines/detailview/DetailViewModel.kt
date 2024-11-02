@@ -9,8 +9,10 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -21,13 +23,15 @@ class DetailViewModel @AssistedInject constructor(
     ): ViewModel() {
 
     private val _uiState = MutableStateFlow(DetailUiState())
-    val uiState: StateFlow<DetailUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<DetailUiState> = _uiState
+        .onStart { loadMedicine() }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            DetailUiState()
+        )
 
-    init {
-        getMedicine()
-    }
-
-    private fun getMedicine() {
+    private fun loadMedicine() {
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(showProgressBar = true)
@@ -46,7 +50,7 @@ class DetailViewModel @AssistedInject constructor(
                         showProgressBar = false
                     )
                 }
-                Log.e(DetailViewModel::class.simpleName, "Unable to get medicine")
+                Log.e(DetailViewModel::class.simpleName, "Unable to load medicine")
             }
         }
     }
