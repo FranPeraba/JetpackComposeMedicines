@@ -2,7 +2,6 @@ package com.example.jetpackcomposemedicines.detailview
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -26,7 +25,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -134,8 +133,8 @@ fun DetailUI(
 private fun openProspect(detailUiState: DetailUiState, context: Context) {
     if (detailUiState.medicine.docs.size == 2) {
         val intent = Intent(Intent.ACTION_VIEW,
-            Uri.parse(detailUiState.medicine.docs[1].urlHtml ?:
-            detailUiState.medicine.docs[1].url))
+            (detailUiState.medicine.docs[1].urlHtml ?: detailUiState.medicine.docs[1].url)?.toUri()
+        )
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     } else {
